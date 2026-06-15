@@ -1,0 +1,306 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Surprise ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    min-height:100vh;
+    overflow:hidden;
+    background:linear-gradient(-45deg,#ff6b6b,#ff9a8b,#ff5e95,#7f5af0);
+    background-size:400% 400%;
+    animation:bgmove 12s ease infinite;
+    color:white;
+}
+
+@keyframes bgmove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.screen{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+}
+
+h1{
+    font-family:'Dancing Script',cursive;
+    font-size:4rem;
+    margin-bottom:15px;
+}
+
+.timer{
+    font-size:2rem;
+    margin-top:20px;
+    font-weight:bold;
+}
+
+.lock-icon{
+    font-size:80px;
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+    50%{
+        transform:scale(1.1);
+    }
+}
+
+#birthdayContent{
+    display:none;
+}
+
+.photo{
+    width:280px;
+    height:280px;
+    border-radius:50%;
+    object-fit:cover;
+    border:8px solid white;
+    box-shadow:0 0 40px rgba(255,255,255,.6);
+}
+
+.message-card{
+    max-width:800px;
+    margin-top:30px;
+    background:rgba(255,255,255,.15);
+    backdrop-filter:blur(15px);
+    border-radius:25px;
+    padding:30px;
+    line-height:1.9;
+}
+
+.typing{
+    font-size:1.3rem;
+    margin-top:15px;
+    min-height:40px;
+}
+
+.confetti{
+    position:fixed;
+    top:-10px;
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    animation:fall linear forwards;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(110vh) rotate(720deg);
+    }
+}
+
+.footer{
+    margin-top:25px;
+    font-size:1rem;
+}
+
+.balloons{
+    position:fixed;
+    font-size:40px;
+    animation:floatUp linear infinite;
+}
+
+@keyframes floatUp{
+    from{
+        transform:translateY(110vh);
+    }
+    to{
+        transform:translateY(-120vh);
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- LOCKED SCREEN -->
+
+<div id="lockedScreen" class="screen">
+
+<div class="lock-icon">🔒</div>
+
+<h1>A Special Surprise Awaits</h1>
+
+<p>Opening on June 20 at 12:00 AM</p>
+
+<div class="timer" id="countdown"></div>
+
+</div>
+
+<!-- BIRTHDAY SCREEN -->
+
+<div id="birthdayContent" class="screen">
+
+<img src="YOUR_PHOTO.jpg" class="photo">
+
+<h1>🎂 Happy Birthday 🎂</h1>
+
+<div class="typing" id="typing"></div>
+
+<div class="message-card">
+
+Dear Birthday Star ❤️,
+
+Today is a beautiful reminder of how special you are.
+
+May God bless you with joy that never fades,
+peace that fills your heart,
+strength for every challenge,
+and countless reasons to smile.
+
+May every prayer you've whispered,
+every dream you've carried,
+and every hope you've held close
+become a beautiful reality.
+
+Thank you for being the wonderful person you are.
+
+✨ May this year be your best year yet. ✨
+
+🎉 Happy Birthday 🎉
+
+</div>
+
+<div class="footer">
+Made with ❤️ Especially for You
+</div>
+
+</div>
+
+<script>
+
+// CHANGE THIS DATE IF NEEDED
+//const unlockDate = new Date("June 20, 2026 00:00:00").getTime();
+const unlockDate = new Date("June 15, 2026 15:15:00").getTime();
+
+function updateCountdown(){
+
+    const now = new Date().getTime();
+    const distance = unlockDate - now;
+
+    if(distance <= 0){
+
+        document.getElementById("lockedScreen").style.display="none";
+        document.getElementById("birthdayContent").style.display="flex";
+
+        startTyping();
+        createConfetti();
+        createBalloons();
+
+        clearInterval(timer);
+
+        return;
+    }
+
+    const days=Math.floor(distance/(1000*60*60*24));
+    const hours=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+    const mins=Math.floor((distance%(1000*60*60))/(1000*60));
+    const secs=Math.floor((distance%(1000*60))/1000);
+
+    document.getElementById("countdown").innerHTML=
+    `${days} Days ${hours} Hours ${mins} Minutes ${secs} Seconds`;
+
+}
+
+const timer=setInterval(updateCountdown,1000);
+updateCountdown();
+
+function startTyping(){
+
+const text=
+"May this year bring happiness, success, love, blessings and beautiful memories. ❤️";
+
+let i=0;
+
+function type(){
+
+if(i<text.length){
+
+document.getElementById("typing").innerHTML += text.charAt(i);
+
+i++;
+
+setTimeout(type,50);
+
+}
+
+}
+
+type();
+
+}
+
+function createConfetti(){
+
+for(let i=0;i<250;i++){
+
+let conf=document.createElement("div");
+
+conf.classList.add("confetti");
+
+conf.style.left=Math.random()*100+"vw";
+
+conf.style.background=
+`hsl(${Math.random()*360},100%,50%)`;
+
+conf.style.animationDuration=
+(3+Math.random()*4)+"s";
+
+document.body.appendChild(conf);
+
+setTimeout(()=>{
+conf.remove();
+},7000);
+
+}
+
+}
+
+function createBalloons(){
+
+setInterval(()=>{
+
+let balloon=document.createElement("div");
+
+balloon.classList.add("balloons");
+
+balloon.innerHTML="🎈";
+
+balloon.style.left=Math.random()*100+"vw";
+
+balloon.style.animationDuration=
+(8+Math.random()*5)+"s";
+
+document.body.appendChild(balloon);
+
+setTimeout(()=>{
+balloon.remove();
+},15000);
+
+},500);
+
+}
+
+</script>
+
+</body>
+</html>
+```
